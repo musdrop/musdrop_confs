@@ -13,17 +13,13 @@ git clone https://github.com/musdrop/musdrop_confs.git ~/musdrop_confs || { echo
 # 进入仓库目录
 cd ~/musdrop_confs || { echo "进入仓库目录失败"; exit 1; }
 
+# 运行nginx
+docker run -d --name=nginx --restart=always -v $(pwd)/nginx:/etc/nginx/conf.d nginx:stable-perl || { echo "运行nps失败"; exit 1; }
+
 # 运行 nps
 docker run -d --name=nps --restart=always \
   -p 8001:8080 -p 8002:80 -p 8003:443 -p 8004:8024 \
   -v $(pwd)/nps:/conf musdrop/nps:v2 || { echo "运行nps失败"; exit 1; }
-
-# 安装nginx
-apt install -y nginx --fix-missing || { echo "安装nginx失败"; exit 1; }
-
-# 建立符号链接
-rm -rf /etc/nginx/conf.d || { echo "删除默认配置失败"; exit 1; }
-ln -s $(pwd)/nginx /etc/nginx/conf.d || { echo "创建符号链接失败"; exit 1; }
 
 # 启动nginx
 service nginx start || { echo "启动nginx失败"; exit 1; }
