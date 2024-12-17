@@ -1,13 +1,31 @@
+#!/bin/bash
+
+# 更新软件包列表
+apt-get update || { echo "更新软件包列表失败"; }
+
+# 安装必要的软件包
+apt install -y git --fix-missing || { echo "安装git失败"; exit 1; }
+apt install -y docker.io --fix-missing || { echo "安装docker失败"; exit 1; }
+
 # 拉取配置仓库
-git clone https://github.com/musdrop/musdrop_confs.git ~/musdrop_confs
+git clone https://github.com/musdrop/musdrop_confs.git ~/musdrop_confs || { echo "拉取配置仓库失败"; exit 1; }
+
 # 进入仓库目录
-cd ~/musdrop_confs
+cd ~/musdrop_confs || { echo "进入仓库目录失败"; exit 1; }
+
 # 运行 nps
-docker run -d --name=nps --restart=always -p 8001:8080 -p 8002:80 -p 8003:443 -p 8004:8024 -v ./nps:/conf musdrop/nps:v2
-# 安装 nginx
-apt install nginx
+docker run -d --name=nps --restart=always \
+  -p 8001:8080 -p 8002:80 -p 8003:443 -p 8004:8024 \
+  -v $(pwd)/nps:/conf musdrop/nps:v2 || { echo "运行nps失败"; exit 1; }
+
+# 安装nginx
+apt install -y nginx --fix-missing || { echo "安装nginx失败"; exit 1; }
+
 # 建立符号链接
-rm -rf /etc/nginx/conf.d
-ln -s ./nginx /etc/nginx/conf.d 
-# 启动 nginx
-service nginx start
+rm -rf /etc/nginx/conf.d || { echo "删除默认配置失败"; exit 1; }
+ln -s $(pwd)/nginx /etc/nginx/conf.d || { echo "创建符号链接失败"; exit 1; }
+
+# 启动nginx
+service nginx start || { echo "启动nginx失败"; exit 1; }
+
+echo "服务器初始化完成！"
