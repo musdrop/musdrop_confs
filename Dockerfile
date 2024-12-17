@@ -1,4 +1,4 @@
-FROM yangliu/nps:latest
+FROM dreamskr/nps:latest
 EXPOSE 80
 EXPOSE 443
 EXPOSE 8080

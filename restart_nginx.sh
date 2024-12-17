@@ -1,0 +1,1 @@
+docker exec -d nginx service nginx restart
