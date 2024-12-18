@@ -16,9 +16,15 @@ cd ~/musdrop_confs || { echo "进入仓库目录失败"; exit 1; }
 # 运行nginx
 docker run -d --name=nginx --network=host --restart=always -v $(pwd)/nginx:/etc/nginx/conf.d nginx:stable-perl || { echo "运行nps失败"; exit 1; }
 
-# 运行 nps
-docker run -d --name=nps --restart=always \
-  -p 8001:8080 -p 8002:80 -p 8003:443 -p 8004:8024 \
-  -v $(pwd)/nps:/conf musdrop/nps:v3 || { echo "运行nps失败"; exit 1; }
+#运行frp
+docker run \
+    -d \
+    --name=frp \
+    --restart=always \
+    -p 8001:7000 \
+    -v $(pwd)/frp/frps.ini:/etc/frps.ini \
+    gists/frp || { echo "运行frp失败"; exit 1; }
+
+
 
 echo "服务器初始化完成！"
