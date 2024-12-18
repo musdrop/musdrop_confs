@@ -21,11 +21,8 @@ docker run \
     -d \
     --name=frp \
     --restart=always \
-    -p 7000:7000 \
-    -p 8002:7001 \
+    --net=host
     -v $(pwd)/frp/frps.ini:/etc/frps.ini \
     gists/frp || { echo "运行frp失败"; exit 1; }
-
-
 
 echo "服务器初始化完成！"
