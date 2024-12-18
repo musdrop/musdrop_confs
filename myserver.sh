@@ -22,6 +22,7 @@ docker run \
     --name=frp \
     --restart=always \
     -p 8001:7000 \
+    -p 8002:7001 \
     -v $(pwd)/frp/frps.ini:/etc/frps.ini \
     gists/frp || { echo "运行frp失败"; exit 1; }
 
