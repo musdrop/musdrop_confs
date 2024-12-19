@@ -1,5 +1,2 @@
-FROM dreamskr/nps:latest
-EXPOSE 80
-EXPOSE 443
-EXPOSE 8080
-EXPOSE 8024
+FROM gists/frp:latest
+CMD ["/usr/bin/frps","-c","/etc/frps.toml"]
