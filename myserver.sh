@@ -23,6 +23,6 @@ docker run \
     --restart=always \
     --net=host
     -v $(pwd)/frp/frps.toml:/etc/frps.toml \
-    gists/frp || { echo "运行frp失败"; exit 1; }
+    musdrop/frp:v1 || { echo "运行frp失败"; exit 1; }
 
 echo "服务器初始化完成！"

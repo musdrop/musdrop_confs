@@ -1,3 +1,10 @@
 nginx 80 443
-frps 7000 7001
-ftp_local 7002
+[frps]
+7000
+7001(域名：frp.musdrop.top)
+
+[ftp_local]
+7002(域名：ftpl.musdrop.top)
+
+[blog]
+4000(域名：blog.musdrop.top)
